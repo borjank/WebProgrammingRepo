@@ -1,0 +1,4 @@
+Made by: Borjan Korunoski 171537
+This contribution is made to be a project work in the course Web Programming, on the FCSE (FINKI).
+The idea behind the project is a tool that companies can use to keep track of their employees, applicants, applications submited by those very applicants and interviews based on the applications.
+This is a two-part project, the front-end should be started with npm start, or simply load it into WebStorm and click Debug, it takes care of the rest and it runs on ("localhost:3000"), while the bakc-end part is started through IntelliJ, by simply clicking the Debug button once it is loaded.
