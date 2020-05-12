@@ -8,7 +8,7 @@ class Login extends React.Component{
     render() {
         return (
             <div>
-                <Navbar/>
+                <Navbar current="profile"/>
                 <LoginMain/>
             </div>
         );

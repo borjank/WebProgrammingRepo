@@ -10,7 +10,6 @@ class LoginMain extends React.Component{
         email: "",
         password: "",
         loggedIn: false,
-        personInfo: "",
         id:-1
     }
 
@@ -36,7 +35,10 @@ class LoginMain extends React.Component{
                 this.setState({id:id})
                 this.setState({personInfo:r.data.charAt(1)})
                 const datacomb = id+r.data.charAt(r.data.length-1)
-                document.cookie = "info="+datacomb
+
+                let dt = new Date();
+                dt = new Date(dt.getTime() + 1000*60*60*24);
+                document.cookie = "loginToken="+datacomb+"; expires="+dt.toUTCString()+";";
             }else{
                 alert(r.data)
             }
@@ -53,7 +55,6 @@ class LoginMain extends React.Component{
                         handleSubmit={this.handleSubmit}
                         email={this.state.email}
                         password={this.state.password}
-                        personInfo={this.state.personInfo}
                     />
                 }
             </main>

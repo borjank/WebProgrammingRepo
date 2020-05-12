@@ -11,7 +11,7 @@ public interface ApplicationService {
     Application getApplication(long applicationId);
     void updateApplication(long applicationId, Application application);
     void deleteApplication(long applicationId);
-    List<Application> getApplicationsByApplicantId(Applicant applicant);
+    List<Application> getApplicationsByApplicantId(long applicantId);
     List<Application> getApplicationsByReviewed(boolean reviewed);
     void reviewApplication(long applicationId, int applicationRating);
 }

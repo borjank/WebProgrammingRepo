@@ -15,9 +15,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     ApplicationRepository applicationRepository;
 
-    public List<Application> getApplicationsByApplicantId(Applicant applicant) {
+    public List<Application> getApplicationsByApplicantId(long applicantId) {
         List<Application> list = new ArrayList<>();
-        applicationRepository.findByApplicantId(applicant.getId()).forEach(list::add);
+        applicationRepository.findByApplicantId(applicantId).forEach(list::add);
         return list;
     }
 

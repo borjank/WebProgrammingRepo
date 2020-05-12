@@ -1,21 +1,25 @@
 import React from "react";
+import ApplicantApplications from "./applicant-applicaitons";
 class ApplicantProfile extends React.Component{
-
     render() {
         return(
             <div>
-                <div className="card mb-3">
-                    <div className="card-header">
-                        <h3>Welcome {this.props.name+" "+this.props.surname}</h3>
-                    </div>
-                    <div className="card-body">
-                        <ul className="list-group">
-                            <li className="list-group-item"><h6>E-mail:</h6> <i>{this.props.email}</i></li>
-                        </ul>
-                    </div>
-                </div>
+                <h3 className="float-left">Welcome <b>{this.props.name+" "+this.props.surname}</b></h3>
+                <div>
+                    <a href="/logout" className="btn btn-danger float-right">LOGOUT</a>
+                </div><br/><br/>
+                <p>
+                    <b>ID: </b> <i>{this.props.id}</i><br/>
+                    <b>E-mail:</b> <i>{this.props.email}</i>
+                </p>
+                <br/>
+                <hr/>
+                <br/>
+
+                <ApplicantApplications data=""/>
             </div>
         );
+        //TODO: ADD APPLICATIONS LIST
     }
 }
 export default ApplicantProfile

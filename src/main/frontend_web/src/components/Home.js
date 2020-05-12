@@ -1,14 +1,18 @@
 import React from "react";
 import Navbar from "./Navbar";
 import HomeCard from "./home-components/home-card";
+import infoimg from "../img/pngwave.png";
 class Home extends React.Component{
     render() {
+
         return(
             <div>
-                <Navbar/>
+                <Navbar current="home"/>
                 <main className="container">
-                    <HomeCard img="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528_960_720.jpg" title="Stars" text="Some random stars and wolf image"/>
-                    <HomeCard img="https://www.stevens.edu/sites/stevens_edu/files/styles/news_detail/public/shutterstock_1165123768.jpg?itok=haoBDwhQ" title="Numbers" text="Some random numbers in 3D"/>
+                    <HomeCard img={infoimg} title="HR-TOOL INFO" text="This is a tool made as a web-programming project. It keeps track of applicants and their applications,
+                    employees, jobs and the interviews that can be issued by an employee of higher ranking based on their applications. Some functionalities aren't fully implemented into
+                    the frontend part of the website, but will be added in some of the following versions. The frontend part is using ReactJS, the backend is running on Java Spring architecture
+                     and the database is PostgreSQL."/>
                 </main>
             </div>
         );

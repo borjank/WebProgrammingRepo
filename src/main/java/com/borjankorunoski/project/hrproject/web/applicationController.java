@@ -3,6 +3,7 @@ package com.borjankorunoski.project.hrproject.web;
 import com.borjankorunoski.project.hrproject.model.Applicant;
 import com.borjankorunoski.project.hrproject.model.Application;
 import com.borjankorunoski.project.hrproject.model.Employee;
+import com.borjankorunoski.project.hrproject.model.Job;
 import com.borjankorunoski.project.hrproject.service.ApplicantService;
 import com.borjankorunoski.project.hrproject.service.ApplicationService;
 import com.borjankorunoski.project.hrproject.service.EmployeeService;
@@ -11,14 +12,17 @@ import com.borjankorunoski.project.hrproject.service.implementation.ApplicantSer
 import com.borjankorunoski.project.hrproject.service.implementation.ApplicationServiceImpl;
 import com.borjankorunoski.project.hrproject.service.implementation.EmployeeServiceImpl;
 import com.borjankorunoski.project.hrproject.service.implementation.JobServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
-
 @CrossOrigin(value = "http://localhost:3000")
+
 public class applicationController {
     @Autowired
     ApplicationService applicationService;
@@ -35,12 +39,17 @@ public class applicationController {
         jobService = new JobServiceImpl();
     }
     @GetMapping(value = "/applications", produces = "application/json")
-    public List<Application> getApplications(){
+    public List<Application> getApplications() {
         List<Application> applicationList = applicationService.getAllApplications();
         return applicationList;
-    }//TODO: Add cookies for applicantId and jobId
+    }
+    @GetMapping(value = "/applications/{id}", produces = "application/json")
+    public List<Application> getApplicationsByApplicantId(@PathVariable("id")long id) {
+        List<Application> applicationList = applicationService.getApplicationsByApplicantId(id);
+        return applicationList;
+    }
     @GetMapping(value = "/application/{id}", produces = "application/json")
-    public Application getApplications(@PathVariable("id")long id){
+    public Application getApplication(@PathVariable("id")long id){
         return applicationService.getApplication(id);
     }
     @GetMapping(value = "/applications/unopened", produces = "application/json")
@@ -54,18 +63,26 @@ public class applicationController {
         return applicationList;
     }
     @PostMapping(value = "/addApplication", consumes = "application/json")
-    public void addApplication(@RequestBody Application application, @CookieValue(value = "applicantId") String applicantId){
-        Applicant applicant = applicantService.getApplicant(Long.parseLong(applicantId));
+    public String addApplication(@RequestBody String json) throws JsonProcessingException {
+        HashMap map = new ObjectMapper().readValue(json, HashMap.class);
+        String id = (String) map.get("id");
+        id = id.substring(1,id.length()-1);
+        String job_id = (String)map.get("job_id");
+        job_id = job_id.substring(1,job_id.length()-1);
+        String date = (String)map.get("issuingDate");
+        Applicant applicant = applicantService.getApplicant(Long.parseLong(id));
+        Job job = jobService.getJob(Long.parseLong(job_id));
+        Application application = new Application();
         application.setApplicant(applicant);
-        application.setJob(jobService.getJob(application.getJobId()));
+        application.setJob(job);
+        application.setIssuingDate(date);
         applicationService.addApplication(application);
+        return("APPLICATION REGISTERED.");
     }
-    @PutMapping(value = "/reviewApplication/{id}/{rating}", consumes = "application/json")
-    public void rateApplication(@PathVariable long id, @PathVariable int rating,@CookieValue(value = "employeeId") String employeeId){
-        Employee employee = employeeService.getEmployee(Long.parseLong(employeeId));
-        if(employee.getPosition().getRank()>=4){
-            applicationService.reviewApplication(id,rating);
-        }
+    @GetMapping(value = "/reviewApplication/{id}/{rating}")
+    public String rateApplication(@PathVariable long id, @PathVariable int rating){
+        applicationService.reviewApplication(id,rating);
+        return "Application with id: "+id+" was reviewed and received a rating of "+rating;
     }
     @DeleteMapping(value = "/deleteApplication/{id}")
     public void deleteApplication(@PathVariable long id){

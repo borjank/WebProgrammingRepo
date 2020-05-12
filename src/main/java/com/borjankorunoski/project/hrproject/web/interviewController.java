@@ -54,17 +54,11 @@ public class interviewController {
         }
     }
     @PutMapping(value = "/editInterview/{id}", consumes = "application/json")
-    public void editInterview(@RequestBody Interview newInterview, @PathVariable long id,@CookieValue(value = "employeeId") String empId){
-        Employee emp = employeeService.getEmployee(Long.parseLong(empId));
-        if(emp.getPosition().getRank()>=4) {
-            interviewService.updateInterview(id, newInterview);
-        }
+    public void editInterview(@RequestBody Interview newInterview, @PathVariable long id){
+        interviewService.updateInterview(id, newInterview);
     }
     @DeleteMapping(value = "/deleteInterview/{id}", consumes = "application/json")
-    public void deleteInterview(@PathVariable long id,@CookieValue(value = "employeeId") String empId){
-        Employee emp = employeeService.getEmployee(Long.parseLong(empId));
-        if(emp.getPosition().getRank()>=4) {
-            interviewService.deleteInterview(id);
-        }
+    public void deleteInterview(@PathVariable long id){
+        interviewService.deleteInterview(id);
     }
 }

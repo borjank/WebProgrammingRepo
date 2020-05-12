@@ -16,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class mainController {
         jobService = new JobServiceImpl();
     }
     @PostMapping("/login")
-    public String showLogin(@RequestBody String json, HttpServletResponse response) throws JsonProcessingException {
+    public String showLogin(@RequestBody String json) throws JsonProcessingException {
         HashMap map = new ObjectMapper().readValue(json, HashMap.class);
         String email;
             email = (String) map.get("email");
@@ -52,9 +54,6 @@ public class mainController {
                     return "Email doesn't exist";
                 }else{
                     if(applicant.getPassword().equals(map.get("password"))){
-                        Cookie cookie = new Cookie("applicantId", Long.toString(applicant.getId()));
-                        cookie.setMaxAge(60*10);
-                        response.addCookie(cookie);
                         return "1,"+Long.toString(applicant.getId())+"a";
                     }else{
                         return "Wrong password";
@@ -62,9 +61,6 @@ public class mainController {
                 }
             }else{
                 if(emp.getPassword().equals(map.get("password"))){
-                    Cookie cookie = new Cookie("employeeId", Long.toString(emp.getId()));
-                    cookie.setMaxAge(60*10);
-                    response.addCookie(cookie);
                     return "1,"+Long.toString(emp.getId())+"e";
                 }else{
                     return "Wrong password";
@@ -72,4 +68,4 @@ public class mainController {
             }
 
         }
-    }
+}

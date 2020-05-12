@@ -5,7 +5,7 @@ class HomeCard extends React.Component{
     }
     render() {
         return(
-            <div className="card mb-3">
+            <div className="card text-center mb-3">
                 <img src={this.props.img} style={{"max-height": "200px"}} className="card-img-top" alt=""/>
                 <div className="card-body">
                     <h4 className="card-title">{this.props.title}</h4>

@@ -24,12 +24,7 @@ function LoginForm(props) {
                     onChange={props.handleChange}
                     className="form-control border-primary"
                 /><br/>
-                    <input type="radio" id="applicantRadio" name="personInfo" value="applicant" checked={props.personInfo==="applicant"}
-                    onChange={props.handleChange}/>
-                    <label htmlFor="applicantRadio" className="text-primary mr-3">Applicant</label>
-                    <input type="radio" id="employeeRadio" name="personInfo" value="employee" checked={props.personInfo==="employee"}
-                    onChange={props.handleChange}/>
-                    <label htmlFor="employeeRadio" className="text-primary">Employee</label><br/><br/>
+
                     <input type="submit" value="Submit" className="btn btn-primary"/>
                 </form>
             </div>

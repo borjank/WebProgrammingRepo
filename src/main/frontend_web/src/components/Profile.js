@@ -1,26 +1,32 @@
 import React from "react";
 import Navbar from "./Navbar";
 import axios from 'axios';
-import ProfileEmployee from "./profile-components/profile-employee";
+import EmployeeProfile from "./profile-components/employee-profile";
 import ApplicantProfile from "./profile-components/applicant-profile";
 class Profile extends React.Component{
-    constructor() {
-        super();
-    }
+
     state={
         person: [],
-        jobInfo: []
+        jobInfo: [],
+        applications: []
     }
     componentDidMount() {
         const cookiedata = document.cookie;
         if(cookiedata.charAt(cookiedata.length-1)==="a"){
-            const url = "http://localhost:8080/applicant/"+cookiedata.substring(5,cookiedata.length-2)
+            const url = "http://localhost:8080/applicant/"+cookiedata.substring(11,cookiedata.length-1)
             axios.get(url)
                 .then(r =>{
                     this.setState({person:r.data})
                 })
+            const apps = "http://localhost:8080/applications/"+cookiedata.substring(11,cookiedata.length-1)
+            fetch(apps)
+                .then(r => r.json())
+                .then(data => {
+                    this.setState({applications : data})
+                })
         }else if(cookiedata.charAt(cookiedata.length-1)==="e"){
-            const url = "http://localhost:8080/employee/"+cookiedata.substring(5,cookiedata.length-1)
+            const url = "http://localhost:8080/employee/"+cookiedata.substring(11,cookiedata.length-1)
+
             axios.get(url)
                 .then(r =>{
                     this.setState({person:r.data})
@@ -32,12 +38,15 @@ class Profile extends React.Component{
 
     render() {
         const d= document.cookie;
+        console.log(this.state.applications[0])
         return(
             <div>
-                <Navbar/>
+                <Navbar current="profile"/>
+
                 <main role="main" className="container">
                     {d.charAt(d.length-1)==="e"?
-                        <ProfileEmployee
+                        <EmployeeProfile
+                            id={this.state.person.id}
                             name={this.state.person.name}
                             surname={this.state.person.surname}
                             address={this.state.person.address}
@@ -51,12 +60,18 @@ class Profile extends React.Component{
                             ssn={this.state.person.ssn}
                             dateOfContract={this.state.person.dateOfContract}
                         />:
-                        <ApplicantProfile
-                            name={this.state.person.name}
-                            surname={this.state.person.surname}
-                            email={this.state.person.email}
-                        />
+                        d.charAt(d.length-1)==="a"?
+                            <ApplicantProfile
+                                id={this.state.person.id}
+                                name={this.state.person.name}
+                                surname={this.state.person.surname}
+                                email={this.state.person.email}
+                                application = {this.state.applications[0]}
+                            />:
+                            window.location.replace("/login")
+
                     }
+
                 </main>
             </div>
         )
